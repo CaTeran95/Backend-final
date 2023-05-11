@@ -31,6 +31,8 @@ export class UsersService {
     const saltOrRounds = 3;
     const password = await bcrypt.hash(data.password, saltOrRounds);
     const newUser = new this.usersModel({ ...data, password });
+    // console.log('New user', newUser);
+    await this.mailerService.sendMail(newUser, 'newRegister', 'New user!');
     return newUser.save();
   }
 
@@ -153,7 +155,7 @@ export class UsersService {
       list,
     };
     const order = await this.ordersService.create(newOrder);
-    await this.mailerService.sendMail(order, 'newOrder', 'New order!')
+    await this.mailerService.sendMail(order, 'newOrder', 'New order!');
     await this.cartsService.deleteProduct(user.cartID.toString());
     user.orders.push(order.id);
     await user.save();

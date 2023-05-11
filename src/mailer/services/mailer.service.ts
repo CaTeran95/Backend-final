@@ -5,7 +5,6 @@ import { join } from 'path';
 
 const mailOptions = (input, template, subject) => {
   let html = '';
-  console.log('DIRNAME:', __dirname);
   renderFile(
     join(__dirname, '../../../', `/src/mailer/htmlMessages/${template}.ejs`),
     { input },
@@ -42,10 +41,9 @@ export class MailerService {
 
   async sendMail(input, templateName: string, subject: string) {
     try {
-      const info = await this.transporter.sendMail(
+      await this.transporter.sendMail(
         mailOptions(input, templateName, subject),
       );
-      console.info('Mail sending complete:', info);
     } catch (err) {
       console.error(err);
     }

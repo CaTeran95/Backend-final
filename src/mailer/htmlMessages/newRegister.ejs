@@ -2,9 +2,9 @@
 
 <ul>
     <li>email: <%= input.email %></li>
-    <li>fullname: <%= input.fullname %></li>
-    <li>address: <%= input.address %></li>
-    <li>age: <%= input.age %></li>
+    <li>fullname: <%= input.name.firstName %> <%= input.name.lastName %></li>
+    <li>Address: <%= input.address.addressLine%> (<%= input.address.postalCode%>) <%= input.address.city%> / <%= input.address.country%></li>
+    <li>Birthday: <%= input.birthday %></li>
+    <li>Personal ID: <%= input.personalID %></li>
     <li>phoneNumber: <%= input.phoneNumber %></li>
-    <li>cartUUID: <%= input.cartUUID %></li>
 </ul>
