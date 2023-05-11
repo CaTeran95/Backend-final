@@ -32,7 +32,13 @@ export class UsersService {
     const saltOrRounds = 3;
     const password = await bcrypt.hash(data.password, saltOrRounds);
     const newUser = new this.usersModel({ ...data, password });
+<<<<<<< HEAD
     await this.mailerService.sendMail(newUser, 'newRegister', 'New user!');
+=======
+
+    // await this.mailerService.sendMail(newUser, 'newRegister', 'New user!');
+
+>>>>>>> 4c7d166b3d07d8dc00ba0ee5f6815c5c006c37ef
     return newUser.save();
   }
 
