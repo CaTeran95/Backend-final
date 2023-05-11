@@ -9,6 +9,7 @@ import {
 } from '../dtos/product.dto';
 import { CreateReviewDTO } from '../dtos/review.dto';
 import { isURL } from 'class-validator';
+import { Name } from 'src/users/entities/name.entity';
 
 @Injectable()
 export class ProductsService {
@@ -53,16 +54,21 @@ export class ProductsService {
     return product;
   }
 
-  async addReview(productID: string, review: CreateReviewDTO) {
-    const product = await this.productModel.findById(productID);
+  async addReview(productID: string, user: Name, review: CreateReviewDTO) {
+    // const product = await this.productModel.findById(productID);
+    const product = await this.findOne(productID);
     if (!product)
       throw new NotFoundException(`Product #${productID} not found`);
-    product.reviews.push(review);
+    console.log('User', user);
+    product.reviews.push({ user, ...review });
     const updatedProduct = await product.save();
     return updatedProduct.reviews;
   }
 
-  async updateProductImages(productID: string, imagesURLs: UpdateProductImagesDTO) {
+  async updateProductImages(
+    productID: string,
+    imagesURLs: UpdateProductImagesDTO,
+  ) {
     const product = await this.productModel.findById(productID);
     const { add, remove } = imagesURLs;
     if (!product)

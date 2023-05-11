@@ -60,12 +60,20 @@ export class CartsService {
     const productIndex = cart.list.findIndex(
       (cartItem) => cartItem.productID._id.toString() === productID,
     );
+    if (productIndex === -1 && quantity < 0) {
+      throw new BadRequestException(
+        `You can't remove product #${productID} because it's not in the cart.`,
+      );
+    }
     if (productIndex === -1) {
-      cart.list.push({ productID, quantity: 1 });
+      cart.list.push({ productID, quantity });
       return cart.save();
     }
     const cartProduct = cart.list[productIndex];
-    if (cartProduct.quantity >= (<Product>cartProduct.productID).stock && quantity > 0) {
+    if (
+      cartProduct.quantity >= (<Product>cartProduct.productID).stock &&
+      quantity > 0
+    ) {
       throw new BadRequestException(
         `You have reached the top of stock for product #${productID}`,
       );
@@ -78,9 +86,9 @@ export class CartsService {
   async deleteProduct(cartID: string, productID?: string) {
     const cart = await this.cartsModel.findById(cartID);
     if (!productID) {
-      cart.list = new Types.Array<CartItem>
-      return cart.save()
-    }    
+      cart.list = new Types.Array<CartItem>();
+      return cart.save();
+    }
     if (!cart) throw new NotFoundException(`Cart #${cartID} not found.`);
     const cartItem = cart.list.find(
       (product) => product.productID.toString() === productID,

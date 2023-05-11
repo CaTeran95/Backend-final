@@ -4,15 +4,17 @@ import * as Joi from 'joi';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+import { AuthModule } from './auth/auth.module';
+import { CartsModule } from './carts/carts.module';
 import { DatabaseModule } from './database/database.module';
+import { MessagesModule } from './messages/messages.module';
+import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 
-import { environments } from './environments';
-import { ProductsModule } from './products/products.module';
-import { CartsModule } from './carts/carts.module';
-import { AuthModule } from './auth/auth.module';
-import { MessagesModule } from './messages/messages.module';
 import config from './config';
+import { environments } from './environments';
+import { RenderModule } from './render/render.module';
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import config from './config';
     UsersModule,
     AuthModule,
     MessagesModule,
+    RenderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,96 @@
+<form id="userForm">
+  <label for="firstName">User name</label>
+  <div name="name">
+    <input
+      type="text"
+      name="firstName"
+      id="firstName"
+      placeholder="First name"
+      required
+    />
+    <input
+      type="text"
+      name="lastName"
+      id="lastName"
+      placeholder="Last name"
+      required
+    />
+  </div>
+  <label for="email">User email</label>
+  <input
+    type="text"
+    name="username"
+    id="email"
+    placeholder="user@mail.com"
+    required
+  />
+  <label for="password">Password</label>
+  <input type="password" name="password" id="password" required />
+  <label for="passwordVerification">Repeat password</label>
+  <input
+    type="password"
+    name="passwordVerification"
+    id="passwordVerification"
+    required
+  />
+  <label for="avatar">Avatar URL</label>
+  <input
+    type="text"
+    name="avatar"
+    id="avatar"
+    placeholder="http://myImage.com/avatar.png"
+    required
+  />
+  <label for="alias">Alias</label>
+  <input type="text" name="alias" id="alias" placeholder="user123" required />
+  <label for="birthday">Birthday</label>
+  <input
+    type="date"
+    name="birthday"
+    id="birthday"
+    placeholder="1990-01-02"
+    required
+  />
+  <label for="phoneNumber">Phone number</label>
+  <input
+    type="tel"
+    name="phoneNumber"
+    id="phoneNumber"
+    placeholder="+1 234 567 89 01"
+    required
+  />
+  <label for="country">Address</label>
+  <div name="address">
+    <input
+      type="text"
+      name="country"
+      id="country"
+      placeholder="Your country"
+      required
+    />
+    <input type="text" name="city" id="city" placeholder="Your city" required />
+    <input
+      type="text"
+      name="postalCode"
+      id="postalCode"
+      placeholder="Your postal code"
+      required
+    />
+    <input
+      type="text"
+      name="addressLine"
+      id="addressLine"
+      placeholder="Your address"
+      required
+    />
+  </div>
+  <label for="personalID">card ID</label>
+  <input
+    type="number"
+    name="personalID"
+    id="personalID"
+    placeholder="1234567890"
+    required
+  />
+  <button type="submit">Register</button>
+</form>

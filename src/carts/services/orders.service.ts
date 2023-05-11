@@ -23,13 +23,13 @@ export class OrdersService {
     return order;
   }
 
-  async findByCustomer(customerID: string) {
+  async findByUser(userID: string) {
     const orders = await this.ordersModel.find({
-      'customer._id': new Types.ObjectId(customerID),
+      'user._id': new Types.ObjectId(userID),
     });
     if (orders.length === 0)
       throw new NotFoundException(
-        `There are not orders for Customer #${customerID}`,
+        `There are not orders for User #${userID}`,
       );
     return orders;
   }

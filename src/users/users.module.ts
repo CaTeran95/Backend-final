@@ -1,30 +1,21 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { CustomersController } from './controllers/customers.controller';
-import { CustomersService } from './services/customers.service';
-import { Customer, CustomerSchema } from './entities/customer.entity';
+import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
 import { User, UserSchema } from './entities/user.entity';
-import { UsersController } from './controllers/users.controller';
-import { CartsModule } from '../carts/carts.module';
 import { CartsService } from 'src/carts/services/carts.service';
+import { CartsModule } from 'src/carts/carts.module';
 
 @Module({
   imports: [
     CartsModule,
-    MongooseModule.forFeature([
-      {
-        name: User.name,
-        schema: UserSchema,
-      },
-    ]),
     MongooseModule.forFeatureAsync([
       {
-        name: Customer.name,
+        name: User.name,
         imports: [CartsModule],
         useFactory: (cartsService: CartsService) => {
-          const schema = CustomerSchema;
+          const schema = UserSchema;
           schema.pre('save', async function () {
             if (!this.cartID) {
               const newCart = await cartsService.create();
@@ -37,8 +28,8 @@ import { CartsService } from 'src/carts/services/carts.service';
       },
     ]),
   ],
-  controllers: [CustomersController, UsersController],
-  providers: [CustomersService, UsersService],
-  exports: [CustomersService, UsersService],
+  controllers: [UsersController],
+  providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

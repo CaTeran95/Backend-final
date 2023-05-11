@@ -9,14 +9,14 @@ export enum Status {
   GENERATED = 'generated',
   CONFIRMED = 'confirmed',
   IN_PROCESS = 'in process',
-  DELIVERED = 'delivered'
+  DELIVERED = 'delivered',
 }
 
 @Schema({ _id: false })
-class OrderCustomer extends Document {
+class OrderUser extends Document {
   @Prop({ type: Types.ObjectId })
   _id: Types.ObjectId;
-  
+
   @Prop({ type: NameSchema })
   name: Name;
 
@@ -39,9 +39,9 @@ class OrderCustomer extends Document {
   personalID: number;
 }
 
-const OrderCustomerSchema = SchemaFactory.createForClass(OrderCustomer);
+const OrderUserSchema = SchemaFactory.createForClass(OrderUser);
 
-@Schema()
+@Schema({ _id: false })
 class ListProduct extends Document {
   @Prop({ type: Types.ObjectId, required: true })
   productID: Types.ObjectId;
@@ -66,8 +66,8 @@ const ListProductSchema = SchemaFactory.createForClass(ListProduct);
 
 @Schema()
 export class Order extends Document {
-  @Prop({ type: OrderCustomerSchema, required: true })
-  customer: OrderCustomer;
+  @Prop({ type: OrderUserSchema, required: true })
+  user: OrderUser;
 
   @Prop({ type: Date, required: true })
   creationDate: Date;
@@ -75,8 +75,8 @@ export class Order extends Document {
   @Prop({ type: [ListProductSchema], required: true })
   list: ListProduct[];
 
-  @Prop({ type: String, default: Status.GENERATED})
-  status: Status
+  @Prop({ type: String, default: Status.GENERATED })
+  status: Status;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

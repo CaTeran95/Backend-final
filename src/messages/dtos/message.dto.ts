@@ -1,15 +1,9 @@
-import { IsMongoId, IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { MessageOrigin } from '../entities/message.entity';
+import { PickType } from '@nestjs/swagger';
 
 export class CreateMessageDTO {
-  @IsMongoId()
-  @IsNotEmpty()
-  emitter: string;
-  
-  @IsMongoId()
-  @IsNotEmpty()
-  receiver: string;
-
   @IsNotEmpty()
   @IsString()
-  body: string; 
+  body: string;
 }

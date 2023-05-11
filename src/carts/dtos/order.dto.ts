@@ -11,10 +11,10 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateBrandDTO } from 'src/products/dtos/brand.dto';
-import { CreateCustomerDTO } from 'src/users/dtos/customers.dto';
+import { CreateUserDTO } from 'src/users/dtos/users.dto';
 import { Status } from '../entities/order.entity';
 
-class CreateOrderCustomerDTO extends OmitType(CreateCustomerDTO, [
+class CreateOrderUserDTO extends OmitType(CreateUserDTO, [
   'password',
   'birthday',
 ]) {}
@@ -48,7 +48,7 @@ class CreateListProductDTO {
 export class CreateOrderDTO {
   @IsNotEmpty()
   @ValidateNested()
-  readonly customer: CreateOrderCustomerDTO;
+  readonly user: CreateOrderUserDTO;
 
   @IsDate()
   @IsNotEmpty()

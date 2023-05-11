@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 
@@ -18,10 +19,21 @@ import {
 } from '../dtos/product.dto';
 import { CreateReviewDTO } from '../dtos/review.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/users/entities/user.entity';
+import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
+import { Self } from 'src/auth/decorators/self.decorator';
 
-@Controller('products')
+@Controller('api/products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
+
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Roles(Role.ADMIN, Role.STAFF)
+  @Post()
+  create(@Body() payload: CreateProductDTO) {
+    return this.productService.create(payload);
+  }
 
   @Get()
   getAll() {
@@ -33,12 +45,8 @@ export class ProductsController {
     return this.productService.findOne(productID);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() payload: CreateProductDTO) {
-    return this.productService.create(payload);
-  }
-
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Roles(Role.ADMIN, Role.STAFF)
   @Put(':productID')
   update(
     @Body() payload: UpdateProductDTO,
@@ -47,19 +55,26 @@ export class ProductsController {
     return this.productService.update(productID, payload);
   }
 
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Roles(Role.ADMIN, Role.STAFF)
   @Delete(':productID')
   delete(@Param('productID', MongoIdPipe) productID: string) {
     return this.productService.delete(productID);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':productID/review')
   addReview(
     @Body() payload: CreateReviewDTO,
     @Param('productID', MongoIdPipe) productID: string,
+    @Request() req,
   ) {
-    return this.productService.addReview(productID, payload);
+    const { name } = req.user;
+    return this.productService.addReview(productID, name, payload);
   }
 
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Roles(Role.ADMIN, Role.STAFF)
   @Put(':productID/images')
   updateImages(
     @Body() updateImages: UpdateProductImagesDTO,

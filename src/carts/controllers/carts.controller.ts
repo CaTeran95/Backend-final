@@ -1,42 +1,65 @@
-import { Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { CartsService } from '../services/carts.service';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
+import { Self } from 'src/auth/decorators/self.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/users/entities/user.entity';
 
-@Controller('carts')
+@Controller('api/carts')
 export class CartsController {
   constructor(private cartsService: CartsService) {}
 
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Roles(Role.ADMIN, Role.STAFF)
   @Get()
   getAll() {
     return this.cartsService.findAll();
   }
 
-  @Get(':cartID')
-  getOne(@Param('cartID', MongoIdPipe) cartID: string) {
+  @UseGuards(JwtAuthGuard)
+  @Get('self')
+  getSelf(@Request() req) {
+    const { cartID } = req.user;
     return this.cartsService.findOne(cartID);
   }
 
-  @Put(':cartID/add/:productID')
+  @UseGuards(JwtAuthGuard)
+  @Put('add/:productID')
   addProduct(
-    @Param('cartID', MongoIdPipe) cartID: string,
     @Param('productID', MongoIdPipe) productID: string,
+    @Request() req,
   ) {
+    const { cartID } = req.user;
     return this.cartsService.modifyProductQty(cartID, productID, 1);
   }
-  
-  @Put(':cartID/remove/:productID')
+
+  @UseGuards(JwtAuthGuard)
+  @Put('remove/:productID')
   removeProduct(
-    @Param('cartID', MongoIdPipe) cartID: string,
     @Param('productID', MongoIdPipe) productID: string,
+    @Request() req,
   ) {
+    const { cartID } = req.user;
     return this.cartsService.modifyProductQty(cartID, productID, -1);
   }
 
-  @Delete(':cartID/delete/:productID')
+  @UseGuards(JwtAuthGuard)
+  @Delete('delete/:productID')
   deleteProduct(
-    @Param('cartID', MongoIdPipe) cartID: string,
     @Param('productID', MongoIdPipe) productID: string,
+    @Request() req,
   ) {
+    const { cartID } = req.user;
     return this.cartsService.deleteProduct(cartID, productID);
   }
 }

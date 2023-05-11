@@ -1,12 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
+import { Address, AddressSchema } from './address.entity';
 import { Name, NameSchema } from './name.entity';
+import { Product } from 'src/products/entities/product.entity';
+import { Cart } from 'src/carts/entities/cart.entity';
+import { Order } from 'src/carts/entities/order.entity';
 
-// export enum Role {
-//   ADMIN = 'admin',
-//   STAFF = 'staff',
-// }
+export enum Role {
+  ADMIN = 'admin',
+  STAFF = 'staff',
+  USER = 'user',
+}
 
 @Schema()
 export class User extends Document {
@@ -24,15 +29,30 @@ export class User extends Document {
 
   @Prop({ required: true })
   alias: string;
+  
+  @Prop({ required: true, default: 'user' })
+  role: Role;
 
   @Prop({ type: Date, required: true })
   birthday: Date;
-  
-  // @Prop({ required: true, default: 'staff' })
-  // role: Role;
 
-  @Prop({ type: Boolean, required: true, default: false })
-  isActive: boolean;
+  @Prop({ required: true })
+  phoneNumber: string;
+
+  @Prop({ type: AddressSchema, required: true })
+  address: Address;
+
+  @Prop({ type: Number, required: true })
+  personalID: number;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: Order.name, required: true }] })
+  orders: Types.Array<Order>;
+
+  @Prop({ type: Types.ObjectId, ref: Cart.name })
+  cartID: Cart | Types.ObjectId;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: Product.name }] })
+  favorites: Types.Array<Product>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

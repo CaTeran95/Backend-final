@@ -1,14 +1,20 @@
-import { PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEmail,
-  IsEnum,
+  IsMongoId,
   IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPhoneNumber,
   IsString,
   ValidateNested,
 } from 'class-validator';
+import { Types } from 'mongoose';
+
 import { CreateNameDTO } from './name.dto';
-// import { Role } from '../entities/user.entity';
+import { CreateAddressDTO } from './address.dto';
 
 export class CreateUserDTO {
   @IsNotEmpty()
@@ -35,9 +41,17 @@ export class CreateUserDTO {
   @IsNotEmpty()
   readonly birthday: Date;
 
-  // @IsEnum(Role)
-  // @IsNotEmpty()
-  // readonly role: Role;
+  @IsNotEmpty()
+  @IsPhoneNumber()
+  readonly phoneNumber: string;
+
+  @IsNotEmpty()
+  @Type(() => CreateAddressDTO)
+  readonly address: CreateAddressDTO;
+
+  @IsNotEmpty()
+  @IsNumber()
+  readonly personalID: number;
 }
 
 export class UpdateUserDTO extends PartialType(CreateUserDTO) {}
