@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Put,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -34,23 +35,14 @@ export class CartsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('add/:productID')
-  addProduct(
+  @Put('setqty/:productID')
+  setProductQty(
+    @Query('qty') quantity: number,
     @Param('productID', MongoIdPipe) productID: string,
     @Request() req,
   ) {
     const { cartID } = req.user;
-    return this.cartsService.modifyProductQty(cartID, productID, 1);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Put('remove/:productID')
-  removeProduct(
-    @Param('productID', MongoIdPipe) productID: string,
-    @Request() req,
-  ) {
-    const { cartID } = req.user;
-    return this.cartsService.modifyProductQty(cartID, productID, -1);
+    return this.cartsService.modifyProductQty(cartID, productID, quantity);
   }
 
   @UseGuards(JwtAuthGuard)

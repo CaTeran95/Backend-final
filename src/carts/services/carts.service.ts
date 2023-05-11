@@ -70,15 +70,12 @@ export class CartsService {
       return cart.save();
     }
     const cartProduct = cart.list[productIndex];
-    if (
-      cartProduct.quantity >= (<Product>cartProduct.productID).stock &&
-      quantity > 0
-    ) {
+    if (quantity > (<Product>cartProduct.productID).stock) {
       throw new BadRequestException(
         `You have reached the top of stock for product #${productID}`,
       );
     }
-    cartProduct.quantity += quantity;
+    cartProduct.quantity = quantity;
     if (cartProduct.quantity === 0) cart.list.pull(cartProduct);
     return cart.save();
   }

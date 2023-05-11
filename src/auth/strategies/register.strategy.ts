@@ -17,9 +17,6 @@ export class RegisterStrategy extends PassportStrategy(Strategy, 'register') {
 
   async validate(email: string, password: string) {
     console.log('Register strategy validation.')
-    const user = await this.usersService.getUser(email);
-    const isValid = await bcrypt.compare(password, user?.password);
-    if (!isValid) throw new BadRequestException('Email or password incorrect');
-    return this.jwtService.sign({ sub: user._id, role: user.role });
+    console.log('Register', email, password)
   }
 }

@@ -9,16 +9,18 @@ form.addEventListener('submit', async (event) => {
   const formObject = Object.fromEntries(formData.entries());
   checkPasswords(formObject);
   const userToSend = formatUserInput(formObject);
-  try {
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userToSend),
-      headers: { 'Content-type': 'application/json' },
-    });
-    // const { redirect } = await res.json();
-    // window.location = redirect;
-  } catch (error) {
-    console.error('There was an error:', error);
+  const res = await fetch('/api/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(userToSend),
+    headers: { 'Content-type': 'application/json' },
+  });
+  if (!res.ok) {
+    const data = await res.json();
+    alert(data.message);
+    console.log('Register error', data.message);
+    form.reset()
+  } else {
+    window.location = '/login';
   }
 });
 
@@ -29,7 +31,7 @@ const formatUserInput = (payload) => {
   const {
     firstName,
     lastName,
-    username,
+    email,
     password,
     avatar,
     alias,
@@ -43,7 +45,7 @@ const formatUserInput = (payload) => {
   } = payload;
   return {
     name: { firstName, lastName },
-    email: username,
+    email,
     password,
     avatar,
     alias,

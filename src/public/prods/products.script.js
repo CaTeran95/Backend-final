@@ -20,7 +20,7 @@ const formatCartProduct = (product) => {
 
 const addToCart = async (id) => {
   try {
-    await fetch(`/api/carts/add/${id}`, { method: 'PUT' });
+    await fetch(`/api/carts/setqty/${id}?qty=1`, { method: 'PUT' });
     console.info(`Product #${id} added successfully`);
   } catch (error) {
     console.error(`There was an error adding the product to the cart`, error);
@@ -29,7 +29,7 @@ const addToCart = async (id) => {
 
 const removeFromCart = async (id) => {
   try {
-    await fetch(`/api/carts/remove/${id}`, { method: 'PUT' });
+    await fetch(`/api/carts/delete/${id}`, { method: 'DELETE' });
     console.info(`Product #${id} removed successfully`);
   } catch (error) {
     console.error(`There was an error adding the product to the cart`, error);

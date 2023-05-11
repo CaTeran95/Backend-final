@@ -1,8 +1,10 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
   Request,
+  Res,
   Response,
   UseGuards,
 } from '@nestjs/common';
@@ -10,9 +12,13 @@ import { LoginAuthGuard } from '../guards/login-auth.guard';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RegisterGuard } from '../guards/register.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateUserDTO } from 'src/users/dtos/users.dto';
+import { UsersService } from 'src/users/services/users.service';
 
 @Controller('api/auth')
 export class AuthController {
+  constructor(private usersService: UsersService) {}
+
   @UseGuards(LoginAuthGuard)
   @Post('login')
   async login() {}
@@ -31,12 +37,15 @@ export class AuthController {
     res.status(200).redirect('/login');
   }
 
-  @UseGuards(LoginAuthGuard)
+  // @UseGuards(RegisterGuard)
   @Post('register')
-  async register() {
-    // async register(@Body() payload) {
-    // console.log('Register payload', payload);
-    // const newUser = await this.authService.registerUser(payload);
-    // return { redirect: '/login' };
+  // async register() {
+  async register(@Body() payload: CreateUserDTO, @Res() res) {
+    try {
+      await this.usersService.create(payload);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+    res.status(200);
   }
 }
