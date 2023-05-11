@@ -12,19 +12,26 @@ const formatCartProduct = (product) => {
       <p>${name}</p>
       <p>Stock: ${stock}</p>
       <p>Price: ${price.toFixed(2)}</p>
-      <button onclick="addToCart('${_id}', ${quantity})">Add to cart</button>
-      <button onclick="removeFromCart('${_id}', ${quantity})">Remove from cart</button>
+      <input id="input${_id}" type="number"/>
+      <button onclick="setQuantity('${_id}', ${stock})">Set quantity</button>
       <button onclick="deleteFromCart('${_id}')">Delete from cart</button>
     </div>
   `;
   return newProduct;
 };
 
-const addToCart = async (id, qty) => {
+const setQuantity = async (id, stock) => {
+  let quantity = document.querySelector(`#input${id}`).value;
+  if (quantity > stock) {
+    return alert(`You can't surpass stock amount (${stock} units)`);
+  }
   try {
-    const res = await fetch(`/api/carts/add/${id}`, { method: 'PUT' });
-    const quantity = document.querySelector(`#qty${id}`);
-    quantity.innerHTML = `Quantity ${qty + 1}`;
+    await fetch(`/api/carts/setqty/${id}?qty=${quantity}`, {
+      method: 'PUT',
+    });
+    const qty = document.querySelector(`#qty${id}`);
+    qty.innerHTML = `Quantity ${quantity}`;
+    document.querySelector(`#input${id}`).value = '';
   } catch (error) {
     console.error(`There was an error adding the product to the cart`, error);
   }
@@ -46,6 +53,7 @@ const removeFromCart = async (id, qty) => {
 const deleteFromCart = async (id) => {
   try {
     await fetch(`/api/carts/delete/${id}`, { method: 'DELETE' });
+    window.location = '/cart';
   } catch (error) {
     console.error(
       `There was an error deleting the product from the cart`,

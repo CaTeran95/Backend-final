@@ -27,11 +27,11 @@ export class UsersService {
 
   async create(data: CreateUserDTO) {
     const user = await this.usersModel.findOne({ email: data.email });
-    if (user) return null;
+    if (user)
+      throw new BadRequestException('This email is already registered.');
     const saltOrRounds = 3;
     const password = await bcrypt.hash(data.password, saltOrRounds);
     const newUser = new this.usersModel({ ...data, password });
-    // console.log('New user', newUser);
     await this.mailerService.sendMail(newUser, 'newRegister', 'New user!');
     return newUser.save();
   }

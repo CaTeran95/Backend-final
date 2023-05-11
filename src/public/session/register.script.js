@@ -15,11 +15,18 @@ form.addEventListener('submit', async (event) => {
       body: JSON.stringify(userToSend),
       headers: { 'Content-type': 'application/json' },
     });
-    // const { redirect } = await res.json();
-    // window.location = redirect;
+    if (!res.ok) {
+      const data = await res.json();
+      alert(data.message);
+      form.reset();
+    } else {
+      window.location = '/login';
+    }
   } catch (error) {
-    console.error('There was an error:', error);
+    console.error('Register error', error);
   }
+  // console.log('Response:', res);
+  
 });
 
 /*
@@ -29,7 +36,7 @@ const formatUserInput = (payload) => {
   const {
     firstName,
     lastName,
-    username,
+    email,
     password,
     avatar,
     alias,
@@ -43,7 +50,7 @@ const formatUserInput = (payload) => {
   } = payload;
   return {
     name: { firstName, lastName },
-    email: username,
+    email,
     password,
     avatar,
     alias,
