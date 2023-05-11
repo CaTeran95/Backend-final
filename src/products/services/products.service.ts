@@ -8,7 +8,6 @@ import {
   UpdateProductImagesDTO,
 } from '../dtos/product.dto';
 import { CreateReviewDTO } from '../dtos/review.dto';
-import { isURL } from 'class-validator';
 import { Name } from 'src/users/entities/name.entity';
 
 @Injectable()
@@ -59,7 +58,6 @@ export class ProductsService {
     const product = await this.findOne(productID);
     if (!product)
       throw new NotFoundException(`Product #${productID} not found`);
-    console.log('User', user);
     product.reviews.push({ user, ...review });
     const updatedProduct = await product.save();
     return updatedProduct.reviews;

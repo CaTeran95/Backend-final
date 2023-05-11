@@ -18,5 +18,9 @@ export default registerAs('config', () => {
       secret: process.env.JWT_SECRET,
       expiresIn: process.env.JWT_EXPIRES_IN,
     },
+    nodemailer: {
+      email: process.env.ADMIN_EMAIL,
+      password: process.env.ADMIN_EMAIL_PW,
+    },
   };
 });

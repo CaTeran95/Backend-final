@@ -15,6 +15,7 @@ import { UsersModule } from './users/users.module';
 import config from './config';
 import { environments } from './environments';
 import { RenderModule } from './render/render.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import { RenderModule } from './render/render.module';
         MDB_CONNECTION: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
+        ADMIN_EMAIL: Joi.string().required(),
+        ADMIN_EMAIL_PW: Joi.string().required(),
       }),
     }),
     DatabaseModule,
@@ -42,6 +45,7 @@ import { RenderModule } from './render/render.module';
     AuthModule,
     MessagesModule,
     RenderModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

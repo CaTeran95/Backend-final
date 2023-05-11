@@ -14,6 +14,7 @@ import { Product } from 'src/products/entities/product.entity';
 import { Brand } from 'src/products/entities/brand.entity';
 import { CartsService } from 'src/carts/services/carts.service';
 import { OrdersService } from 'src/carts/services/orders.service';
+import { MailerService } from 'src/mailer/services/mailer.service';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +22,7 @@ export class UsersService {
     @InjectModel(User.name) private usersModel: Model<User>,
     private cartsService: CartsService,
     private ordersService: OrdersService,
+    private mailerService: MailerService,
   ) {}
 
   async create(data: CreateUserDTO) {
@@ -112,7 +114,7 @@ export class UsersService {
         model: 'Product',
       },
     });
-    // Order products list formatting:
+    /* Order products list formatting: */
     const list = cart.list.map((product) => {
       const { _id, images, name, brand, price } = <Product>product.productID;
       return {
@@ -124,7 +126,7 @@ export class UsersService {
         quantity: product.quantity,
       };
     });
-    // Order user formatting:
+    /* Order user formatting: */
     const {
       _id,
       name,
@@ -151,6 +153,7 @@ export class UsersService {
       list,
     };
     const order = await this.ordersService.create(newOrder);
+    await this.mailerService.sendMail(order, 'newOrder', 'New order!')
     await this.cartsService.deleteProduct(user.cartID.toString());
     user.orders.push(order.id);
     await user.save();

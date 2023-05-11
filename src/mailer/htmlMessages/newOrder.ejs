@@ -1,0 +1,17 @@
+<h1>Order number: <%= input._id %></h1>
+
+<h3>User information:</h3>
+<ul>
+    <li>User name: <%= input.user.name.firstName%> <%= input.user.name.lastName%></li>
+    <li>Phone number: <%= input.user.phoneNumber%></li>
+    <li>Address: <%= input.user.address.addressLine%> (<%= input.user.address.postalCode%>) <%= input.user.address.city%> / <%= input.user.address.country%></li>
+    <li>Email: <%= input.user.email%></li>
+</ul>
+
+<h3>Order details</h3>
+<ul>
+    <% for( let index = 0; index < input.list.length; index++ ) { %>
+        <% const product = input.list[index] %>
+        <li><%= product.quantity %> <%= product.name %></li>
+    <% } %>
+</ul>

@@ -6,10 +6,12 @@ import { UsersService } from './services/users.service';
 import { User, UserSchema } from './entities/user.entity';
 import { CartsService } from 'src/carts/services/carts.service';
 import { CartsModule } from 'src/carts/carts.module';
+import { MailerModule } from 'src/mailer/mailer.module';
 
 @Module({
   imports: [
     CartsModule,
+    MailerModule,
     MongooseModule.forFeatureAsync([
       {
         name: User.name,
