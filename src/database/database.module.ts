@@ -9,16 +9,13 @@ import config from 'src/config';
   imports: [
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigType<typeof config>) => {
-        const {
-          dbName,
-          user,
-          password,
-          port,
-          host,
-          connection,
-        } = configService.mongo;
+        const { dbName, user, password, port, host, connection } =
+          configService.mongo;
+        const uri = port
+          ? `${connection}://${host}:${port}`
+          : `${connection}://${host}`;
         return {
-          uri: `${connection}://${host}:${port}`,
+          uri,
           user,
           pass: password,
           dbName,
@@ -27,6 +24,6 @@ import config from 'src/config';
       inject: [config.KEY],
     }),
   ],
-  exports: [MongooseModule],  
+  exports: [MongooseModule],
 })
 export class DatabaseModule {}

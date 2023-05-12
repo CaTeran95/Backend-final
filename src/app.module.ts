@@ -31,7 +31,6 @@ import { MailerModule } from './mailer/mailer.module';
         MDB_USER: Joi.string().required(),
         MDB_PASSWORD: Joi.string().required(),
         MDB_HOST: Joi.string().required(),
-        MDB_PORT: Joi.number().required(),
         MDB_CONNECTION: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
