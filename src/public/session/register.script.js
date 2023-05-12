@@ -24,9 +24,7 @@ form.addEventListener('submit', async (event) => {
     }
   } catch (error) {
     console.error('Register error', error);
-  }
-  // console.log('Response:', res);
-  
+  } 
 });
 
 /*
