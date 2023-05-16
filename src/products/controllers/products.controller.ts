@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { ProductsService } from '../services/products.service';
 import { MongoIdPipe } from 'src/common/mongo-id.pipe';
 import {
   CreateProductDTO,
+  FilterProductsDTO,
   UpdateProductDTO,
   UpdateProductImagesDTO,
 } from '../dtos/product.dto';
@@ -36,8 +38,8 @@ export class ProductsController {
   }
 
   @Get()
-  getAll() {
-    return this.productService.findAll();
+  getAll(@Query() params: FilterProductsDTO) {
+    return this.productService.findAll(params);
   }
 
   @Get(':productID')

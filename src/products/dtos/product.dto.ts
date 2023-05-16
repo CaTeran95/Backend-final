@@ -61,3 +61,19 @@ export class UpdateProductImagesDTO {
   @IsNotEmpty()
   readonly remove: string[];
 }
+
+export class FilterProductsDTO {
+  @IsOptional()
+  @IsPositive()
+  limit: number;
+
+  @IsOptional()
+  @Min(0)
+  offset: number;
+
+  @IsOptional()
+  brand: string;
+  
+  @IsOptional()
+  category: string;
+}

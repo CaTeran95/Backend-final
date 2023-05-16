@@ -1,0 +1,26 @@
+nav {
+  padding: 0.5rem 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f41a6;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  list-style-type: none;
+}
+
+nav #logout {
+  padding: 0.25rem 1rem;
+  background-color: rgb(149, 36, 36);
+  border-radius: 0.5rem;
+}

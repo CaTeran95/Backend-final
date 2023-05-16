@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from '../entities/product.entity';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import {
   CreateProductDTO,
+  FilterProductsDTO,
   UpdateProductDTO,
   UpdateProductImagesDTO,
 } from '../dtos/product.dto';
@@ -21,7 +22,19 @@ export class ProductsService {
     return newProduct.save();
   }
 
-  async findAll() {
+  async findAll(params?: FilterProductsDTO) {
+    const filters: FilterQuery<Product> = {};
+    if (params) {
+      const { limit, offset } = params;
+      if (params.brand) filters.brand = params.brand;
+      if (params.category) filters.category = params.category;
+      return this.productModel
+        .find(filters)
+        .populate('category')
+        .populate('brand')
+        .skip(offset)
+        .limit(limit);
+    }
     return this.productModel.find().populate('category').populate('brand');
   }
 
